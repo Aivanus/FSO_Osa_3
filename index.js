@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const cors = require('cors')
 
 const app = express()
 
@@ -10,6 +11,7 @@ morgan.token('body', (req, res) => {
 
 app.use(bodyParser.json())
 app.use(morgan(':method :url :body :status :res[content-length] - :response-time ms'))
+app.use(cors())
 
 let persons = [
   {
@@ -70,7 +72,7 @@ app.post('/api/persons', (req, res) => {
     return res.status(400).json({ error: 'The name must be unique!' })
   }
 
-  if (body.name === undefined || body.number === undefined) {
+  if (body.name === "" || body.number === "") {
     return res.status(400).json({ error: 'You must specify both name and number' })
   }
 
