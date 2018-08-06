@@ -23,3 +23,32 @@ Content-Type: application/json
     "name": "Same test",
     "number":""
 }
+
+# Heroku requests
+
+###
+POST https://stormy-ridge-16065.herokuapp.com/api/persons
+Content-Type: application/json
+
+{
+    "name": "Post Test",
+    "number": "040-000111"
+}
+
+###
+POST https://stormy-ridge-16065.herokuapp.com/api/persons
+Content-Type: application/json
+
+{
+    "name": "",
+    "number": "040-000111"
+}
+
+###
+POST https://stormy-ridge-16065.herokuapp.com/api/persons
+Content-Type: application/json
+
+{
+    "name": "Same test",
+    "number":""
+}
