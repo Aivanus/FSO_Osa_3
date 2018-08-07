@@ -1,18 +1,18 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const morgan = require('morgan')
-const cors = require('cors')
-const Person = require('./models/person')
+const express = require("express")
+const bodyParser = require("body-parser")
+const morgan = require("morgan")
+const cors = require("cors")
+const Person = require("./models/person")
 
 const app = express()
 
-morgan.token('body', (req, res) => {
+morgan.token("body", (req, res) => {
 	return JSON.stringify(req.body)
 })
 
 app.use(bodyParser.json())
-app.use(morgan(':method :url :body :status :res[content-length] - :response-time ms'))
-app.use(express.static('build'))
+app.use(morgan(":method :url :body :status :res[content-length] - :response-time ms"))
+app.use(express.static("build"))
 app.use(cors())
 
 // let persons = [
@@ -43,11 +43,11 @@ app.use(cors())
 //   }
 // ]
 
-app.get('/', (req, res) => {
-	res.send('<h1>Persons API</h1>')
+app.get("/", (req, res) => {
+	res.send("<h1>Persons API</h1>")
 })
 
-app.get('/api/persons', (req, res) => {
+app.get("/api/persons", (req, res) => {
 	Person
 		.find({})
 		.then(persons => {
@@ -59,7 +59,7 @@ app.get('/api/persons', (req, res) => {
 		})
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get("/api/persons/:id", (req, res) => {
 	Person
 		.findById(req.params.id)
 		.then(person => {
@@ -71,19 +71,19 @@ app.get('/api/persons/:id', (req, res) => {
 		})
 })
 
-app.get('/info', (req, res) => {
+app.get("/info", (req, res) => {
 	Person
 		.find({})
 		.then(persons => {
-			res.send('<p>Puhelinluettelossa on ' + persons.length + ' henkilön tiedot</p>' + new Date())
+			res.send("<p>Puhelinluettelossa on " + persons.length + " henkilön tiedot</p>" + new Date())
 		})
 })
 
-app.post('/api/persons', (req, res) => {
+app.post("/api/persons", (req, res) => {
 	const body = req.body
 
 	if (body.name === "" || body.number === "") {
-		return res.status(400).json({ error: 'You must specify both name and number' })
+		return res.status(400).json({ error: "You must specify both name and number" })
 	}
 
 	Person
@@ -91,7 +91,7 @@ app.post('/api/persons', (req, res) => {
 		.then(potentialPerson => {
 			if (potentialPerson.length !== 0) {
 				console.log(potentialPerson)
-				return res.status(400).json({ error: 'The name must be unique!' })
+				return res.status(400).json({ error: "The name must be unique!" })
 			}
 			const person = new Person({
 				name: body.name,
@@ -107,7 +107,7 @@ app.post('/api/persons', (req, res) => {
 
 })
 
-app.put('/api/persons/:id', (req, res) => {
+app.put("/api/persons/:id", (req, res) => {
 	const body = req.body
 
 	const person = {
@@ -122,11 +122,11 @@ app.put('/api/persons/:id', (req, res) => {
 		})
 		.catch(error => {
 			console.log(error)
-			res.status(400).send({ error: 'malformatted id' })
+			res.status(400).send({ error: "malformatted id" })
 		})
 })
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete("/api/persons/:id", (req, res) => {
 	Person
 		.findByIdAndRemove(req.params.id)
 		.then(result => {
@@ -134,11 +134,11 @@ app.delete('/api/persons/:id', (req, res) => {
 		})
 		.catch(error => {
 			console.log(error)
-			res.status(400).send({ error: 'malformatted id' })
+			res.status(400).send({ error: "malformatted id" })
 		})
 })
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-	console.log('Server running on port ' + PORT)
+	console.log("Server running on port " + PORT)
 })
